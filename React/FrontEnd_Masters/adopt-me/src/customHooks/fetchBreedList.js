@@ -15,6 +15,6 @@ export const useBreedList = (animal) => {
             requestBreedList();
         }
 
-        const requestBreed
+        
     }, [animal]);
 }
