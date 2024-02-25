@@ -47,7 +47,7 @@ const Details = () => {
             </h1>
             <div className="flex justify-center gap-4">
               <Button
-                style={{ backgroundColor: "#AD343E", color: "white" }}
+                gradientMonochrome="failure"
                 onClick={() => setOpenModal(false)}
               >
                 Yes, adopt
