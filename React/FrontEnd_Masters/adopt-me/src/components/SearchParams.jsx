@@ -3,6 +3,7 @@ import Results from "./Results";
 import { useQuery } from "@tanstack/react-query";
 import fetchBreedList from "../queries/fetchBreedList";
 import fetchSearch from "../queries/fetchSearch";
+import { Label, TextInput } from "flowbite-react";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
@@ -38,12 +39,18 @@ const SearchParams = () => {
       >
         <label htmlFor="location">
           Location
-          <input id="location" name="location" placeholder="Location" />
+          <input
+            id="location"
+            name="location"
+            placeholder="Location"
+            className="min-h-[auto] w-full rounded border-0 px-2 py-[0.00rem] leading-[1.2]"
+          />
         </label>
 
         <label htmlFor="animal">
           Animal
           <select
+            className="min-h-[auto] w-full rounded border-0 px-2 py-[0.00rem] leading-[1.2]"
             id="animal"
             value={animal}
             onChange={(e) => setAnimal(e.target.value)}
@@ -59,7 +66,12 @@ const SearchParams = () => {
 
         <label htmlFor="breed">
           Breed
-          <select id="breed" name="breed" disabled={breeds.length === 0}>
+          <select
+            id="breed"
+            name="breed"
+            disabled={breeds.length === 0}
+            className="min-h-[auto] w-full rounded border-0 px-2 py-[0.00rem] leading-[1.2]"
+          >
             <option />
             {breeds.map((item) => (
               <option key={item} value={item}>
