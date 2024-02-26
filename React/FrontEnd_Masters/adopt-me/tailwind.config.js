@@ -7,6 +7,11 @@ export default {
   ],
   theme: {
     extend: {},
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      'myColor': '#ad343e',
+    },
   },
   plugins: [require("flowbite/plugin")],
 };

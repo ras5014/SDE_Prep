@@ -47,10 +47,11 @@ const Details = () => {
             </h1>
             <div className="flex justify-center gap-4">
               <Button
-                gradientMonochrome="failure"
+                // gradientMonochrome="failure"
+                className="bg-myColor hover:bg-red-800"
                 onClick={() => setOpenModal(false)}
               >
-                Yes, adopt
+                 <span className="text-white">Yes, adopt</span>
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
                 No, cancel
