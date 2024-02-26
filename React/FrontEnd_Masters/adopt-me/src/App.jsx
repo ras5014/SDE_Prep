@@ -9,22 +9,23 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: Infinity,
       cacheTime: Infinity,
-    }
-  }
+    },
+  },
 });
-
 
 function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-      <Link to="/">
-        <header><h1>Adopt Me!</h1></header>
-      </Link>
-      <Routes>
-        <Route path="/" element={<SearchParams />} />
-        <Route path="/details/:id" element={<Details />} />
-      </Routes>
+        <Link to="/">
+          <header>
+            <a href="/">Adopt Me!</a>
+          </header>
+        </Link>
+        <Routes>
+          <Route path="/" element={<SearchParams />} />
+          <Route path="/details/:id" element={<Details />} />
+        </Routes>
       </QueryClientProvider>
     </BrowserRouter>
   );
