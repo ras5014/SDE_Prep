@@ -1,12 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import fetchPet from "../queries/fetchPet";
 import Carousel from "./Carousel";
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { adopt } from "../store/adoptedPetSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const Details = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const { id } = useParams();
   const results = useQuery(["details", id], fetchPet);
@@ -47,11 +51,13 @@ const Details = () => {
             </h1>
             <div className="flex justify-center gap-4">
               <Button
-                // gradientMonochrome="failure"
                 className="bg-myColor hover:bg-red-800"
-                onClick={() => setOpenModal(false)}
+                onClick={() => {
+                  dispatch(adopt(pet));
+                  navigate("/");
+                }}
               >
-                 <span className="text-white">Yes, adopt</span>
+                <span className="text-white">Yes, adopt</span>
               </Button>
               <Button color="gray" onClick={() => setOpenModal(false)}>
                 No, cancel

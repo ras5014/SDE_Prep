@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Results from "./Results";
 import { useQuery } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 import fetchBreedList from "../queries/fetchBreedList";
 import fetchSearch from "../queries/fetchSearch";
-import { Label, TextInput } from "flowbite-react";
+import { Link } from "react-router-dom";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
+  const adoptedPet = useSelector((state) => state.adoptedPet.value);
   const [requestParams, setRequestParams] = useState({
     location: "",
     animal: "",
@@ -37,6 +39,12 @@ const SearchParams = () => {
           setRequestParams(obj);
         }}
       >
+        {adoptedPet ? (
+          <div className="pet image-container">
+            <img src={adoptedPet.images[0]} alt={name} />
+          </div>
+        ) : null}
+
         <label htmlFor="location">
           Location
           <input
