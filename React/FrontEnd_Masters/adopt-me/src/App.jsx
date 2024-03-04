@@ -20,11 +20,9 @@ function App() {
     <BrowserRouter>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <Link to="/">
-            <header>
-              <a href="/">Adopt Me!</a>
-            </header>
-          </Link>
+          <header>
+            <a href="/">Adopt Me!</a>
+          </header>
           <Routes>
             <Route path="/" element={<SearchParams />} />
             <Route path="/details/:id" element={<Details />} />

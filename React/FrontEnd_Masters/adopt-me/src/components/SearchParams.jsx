@@ -5,14 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { all } from "../store/searchParamsSlice";
 import fetchBreedList from "../queries/fetchBreedList";
 import fetchSearch from "../queries/fetchSearch";
-import { Link } from "react-router-dom";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
   const dispatch = useDispatch();
   const adoptedPet = useSelector((state) => state.adoptedPet.value);
 
-  const requestParams = useSelector((state) => state.adoptedPet.value);
+  const requestParams = useSelector((state) => state.searchParams.value);
 
   const [animal, setAnimal] = useState("");
 
