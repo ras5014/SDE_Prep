@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const searchParamsSlice = createSlice({
-  name: searchParams,
+  name: "searchParams",
   initialState: {
-    location: "",
-    animal: "",
-    breed: "",
+    value: {
+      animal: "",
+      location: "",
+      breed: "",
+    },
   },
   reducers: {
     all: (state, action) => {

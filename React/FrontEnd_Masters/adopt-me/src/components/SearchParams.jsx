@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import Results from "./Results";
 import { useQuery } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { all } from "../store/searchParamsSlice";
 import fetchBreedList from "../queries/fetchBreedList";
 import fetchSearch from "../queries/fetchSearch";
 import { Link } from "react-router-dom";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
+  const dispatch = useDispatch();
   const adoptedPet = useSelector((state) => state.adoptedPet.value);
-  const [requestParams, setRequestParams] = useState({
-    location: "",
-    animal: "",
-    breed: "",
-  });
-  const [animal, setAnimal] = useState("");
 
-  // Using custom hooks
-  // const [breeds] = useBreedList(animal);
+  const requestParams = useSelector((state) => state.adoptedPet.value);
+
+  const [animal, setAnimal] = useState("");
 
   // Using React Query
   const tempBreeds = useQuery(["breeds", animal], fetchBreedList);
@@ -36,7 +33,8 @@ const SearchParams = () => {
             location: formData.get("location") ?? "",
             breed: formData.get("breed") ?? "",
           };
-          setRequestParams(obj);
+
+          dispatch(all(obj));
         }}
       >
         {adoptedPet ? (
@@ -58,6 +56,7 @@ const SearchParams = () => {
         <label htmlFor="animal">
           Animal
           <select
+            name="animal"
             className="min-h-[auto] w-full rounded border-0 px-2 py-[0.00rem] leading-[1.2]"
             id="animal"
             value={animal}
