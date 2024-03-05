@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import fetchPet from "../queries/fetchPet";
+// import { useQuery } from "@tanstack/react-query";
+import { useGetPetQuery } from "../apiServices/petApiService";
+// import fetchPet from "../queries/fetchPet";
 import Carousel from "./Carousel";
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
@@ -13,9 +14,10 @@ const Details = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
   const { id } = useParams();
-  const results = useQuery(["details", id], fetchPet);
+  // const results = useQuery(["details", id], fetchPet);
+  const { isLoading, data: pet } = useGetPetQuery(id);
 
-  if (results.isLoading) {
+  if (isLoading) {
     return (
       <div className="loading-pane">
         <h2 className="loader">⌛</h2>
@@ -23,7 +25,7 @@ const Details = () => {
     );
   }
 
-  const pet = results.data.pets[0];
+  // const pet = results.data.pets[0];
 
   return (
     <>

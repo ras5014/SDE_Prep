@@ -4,7 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useSelector, useDispatch } from "react-redux";
 import { all } from "../store/searchParamsSlice";
 import fetchBreedList from "../queries/fetchBreedList";
-import fetchSearch from "../queries/fetchSearch";
+// import fetchSearch from "../queries/fetchSearch";
+import { useSearchQuery } from "../apiServices/petApiService";
+import { useGetBreedsQuery } from "../apiServices/petApiService";
 const ANIMALS = ["bird", "cat", "dog", "rabbit", "reptile"];
 
 const SearchParams = () => {
@@ -16,10 +18,15 @@ const SearchParams = () => {
   const [animal, setAnimal] = useState("");
 
   // Using React Query
-  const tempBreeds = useQuery(["breeds", animal], fetchBreedList);
-  const breeds = tempBreeds?.data?.breeds ?? [];
-  const results = useQuery(["search", requestParams], fetchSearch);
-  const pets = results?.data?.pets ?? [];
+  // const tempBreeds = useQuery(["breeds", animal], fetchBreedList);
+  // const breeds = tempBreeds?.data?.breeds ?? [];
+  // const results = useQuery(["search", requestParams], fetchSearch);
+  // const pets = results?.data?.pets ?? [];
+  // Using RTK Query
+  let { data: breeds } = useGetBreedsQuery(animal);
+  breeds = breeds ?? [];
+  let { data: pets } = useSearchQuery(requestParams);
+  pets = pets ?? [];
 
   return (
     <div className="search-params">
