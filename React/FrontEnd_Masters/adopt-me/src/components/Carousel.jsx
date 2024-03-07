@@ -6,10 +6,11 @@ const Carousel = ({
   const [active, setActive] = useState(0);
   return (
     <div className="carousel">
-      <img src={images[active]} alt="animal" />
+      <img data-testid="hero" src={images[active]} alt="animal" />
       <div className="carousel-smaller">
         {images.map((photo, index) => (
           <img
+            data-testid={`thumbnail${index}`}
             key={photo}
             src={photo}
             className={index === active ? "active" : ""}
