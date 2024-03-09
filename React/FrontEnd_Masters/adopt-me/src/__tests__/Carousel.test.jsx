@@ -8,4 +8,5 @@ test("lets users click on thumbnails to make them the hero", async () => {
 
   const hero = await carousel.findByTestId("hero");
   expect(hero.src).toContain(images[0]);
+  carousel.unmount();
 });
