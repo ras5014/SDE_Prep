@@ -39,7 +39,7 @@ const InputCity = () => {
       )}
       {weatherData.isError && (
         <h1>
-          <strong>{`Could find city ${city}`}</strong>
+          <strong>{`Couldn't find city ${city}`}</strong>
         </h1>
       )}
       {weatherData.data && <ShowWeather data={data} />}
