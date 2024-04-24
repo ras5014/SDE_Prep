@@ -39,4 +39,58 @@ router.get("/getTransaction", async (req, res) => {
   }
 });
 
+router.get("./getAllTransactions", async (req, res) => {
+  const { type, userId } = req.body;
+  try {
+    const db = admin.firestore();
+    const collectionName = type === "income" ? "income" : "expense";
+
+    const transactionsRef = firestore.collection(collectionName);
+    const querySnapshot = await transactionsRef
+      .where("userId", "==", userId)
+      .get();
+    const userTransactions = querySnapshot.docs.map((doc) => ({
+      formId: doc.id,
+      ...doc.data(),
+    }));
+    res.status(200).json({ success: true, userTransactions });
+  } catch (err) {
+    console.error("Error Getching Data: ", err);
+    res.status(500).json({ success: false });
+  }
+});
+
+router.put("/editTransaction", async (req, res) => {
+  const { type, id, transactionData } = req.body;
+
+  try {
+    const firestore = admin.firestore();
+    const collectionName = type === "income" ? "income" : "expense";
+
+    await firestore.collection(collectionName).doc(id).update(transactionData);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error updating transaction data:", error);
+
+    res.status(500).json({ success: false });
+  }
+});
+
+// Route to delete a transaction by ID
+router.delete("/deleteTransaction", async (req, res) => {
+  const { type, id } = req.query;
+
+  try {
+    const firestore = admin.firestore();
+    const collectionName = type === "income" ? "income" : "expense";
+    await firestore.collection(collectionName).doc(id).delete();
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+
+    res.status(500).json({ success: false });
+  }
+});
 module.exports = router;
