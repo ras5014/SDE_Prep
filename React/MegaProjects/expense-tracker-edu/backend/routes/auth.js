@@ -2,12 +2,19 @@ const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
 
-router.post("/google-signin", (req, res) => {
+router.post("/google-signin", async (req, res) => {
   try {
     const { idToken } = req.body;
-    const decodedToken = admin.auth().verifyIdToken(idToken);
-    req.status(200).json({ success: true });
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const { name, email, picture } = decodedToken;
+    res
+      .status(200)
+      .json({
+        success: true,
+        user: { name: name, email: email, picture: picture },
+      });
   } catch (err) {
+    console.error("Error verifying Google Sign-In token:", err);
     res.status(401).json({ success: false });
   }
 });

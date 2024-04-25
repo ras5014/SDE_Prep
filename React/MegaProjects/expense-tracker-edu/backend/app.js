@@ -12,6 +12,11 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(routes);
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
