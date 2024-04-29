@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <Addtransaction transactionType="expenses" />,
   },
   {
-    path: "/editincome/:id",
+    path: "/getTransaction/income/:id",
     element: <EditTransaction transactionType="income" />,
   },
 ]);

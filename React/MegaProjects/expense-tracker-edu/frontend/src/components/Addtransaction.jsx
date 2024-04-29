@@ -4,6 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const AddTransactionSchema = z.object({
+  date: z.string().date("Date is required"),
+  amount: z
+    .string() // Accepts a string input
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "Amount must be a number", // Custom error message for non-numeric values
+    })
+    .refine((value) => parseFloat(value) > 0, {
+      message: "Amount must be positive",
+    }),
+  paymentMethod: z.string().nonempty("Payment method is required"),
+  notes: z.string().nonempty("Notes is required"),
+  category: z.string().nonempty("Category is required"),
+  frequency: z.string().nonempty("Frequency is required"),
+});
 
 const Addtransaction = ({ transactionType }) => {
   const [errorState, setErrorState] = useState(false);
@@ -11,9 +29,10 @@ const Addtransaction = ({ transactionType }) => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(AddTransactionSchema),
+  });
   const navigate = useNavigate();
   useEffect(() => {
     if (!user.name) navigate("/login");
@@ -59,6 +78,9 @@ const Addtransaction = ({ transactionType }) => {
                   className="form-control"
                   {...register("date")}
                 />
+                {errors.date && (
+                  <p className="text-danger">{errors.date.message}</p>
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="amount" className="form-label">
@@ -69,6 +91,9 @@ const Addtransaction = ({ transactionType }) => {
                   className="form-control"
                   {...register("amount")}
                 />
+                {errors.amount && (
+                  <p className="text-danger">{errors.amount.message}</p>
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="paymentMethod" className="form-label">
@@ -84,12 +109,18 @@ const Addtransaction = ({ transactionType }) => {
                   <option value="Bank Transfer">Bank Transfer</option>
                   <option value="Other">Other</option>
                 </select>
+                {errors.paymentMethod && (
+                  <p className="text-danger">{errors.paymentMethod.message}</p>
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="notes" className="form-label">
                   Notes
                 </label>
                 <textarea className="form-control" {...register("notes")} />
+                {errors.notes && (
+                  <p className="text-danger">{errors.notes.message}</p>
+                )}
               </div>
             </div>
             <div className="col-md-6">
@@ -116,6 +147,9 @@ const Addtransaction = ({ transactionType }) => {
                   <option value="gift">Gift</option>
                   <option value="other">Other</option>
                 </select>
+                {errors.category && (
+                  <p className="text-danger">{errors.category.message}</p>
+                )}
               </div>
               <div className="mb-3">
                 <label htmlFor="frequency" className="form-label">
@@ -130,6 +164,9 @@ const Addtransaction = ({ transactionType }) => {
                   <option value="Semi-Annually">Semi-Annually</option>
                   <option value="Annually">Annually</option>
                 </select>
+                {errors.frequency && (
+                  <p className="text-danger">{errors.frequency.message}</p>
+                )}
               </div>
             </div>
             <div className="row">

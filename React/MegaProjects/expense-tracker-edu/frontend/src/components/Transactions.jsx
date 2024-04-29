@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useFetchAllTransactionsQuery } from "../store/api-service";
+import RemoveTransaction from "./RemoveTransaction";
 
 const Transactions = ({ transactionType }) => {
   const user = useSelector((state) => state.user);
@@ -22,16 +23,13 @@ const Transactions = ({ transactionType }) => {
     }
   );
 
-  console.log(data);
-
   const handleEditTransaction = (transaction) => {
-    const editTransactionUrl = `/edit${transactionType}/${transaction.formId}`;
+    const editTransactionUrl = `/getTransaction/${transactionType}/${transaction.formId}`;
     navigate(editTransactionUrl);
   };
-  const handleRemoveTransaction = (transactionId) => {
-    // Remove transaction logic
-    // Update Data (May be store data in a state and update it here)
-  };
+
+  const handleRemove = () => {};
+
   return (
     <div>
       <Navbar />
@@ -94,11 +92,11 @@ const Transactions = ({ transactionType }) => {
                       >
                         <i className="bi bi-pencil-square"></i>
                       </button>
-                      {/* <RemoveTransaction
+                      <RemoveTransaction
                         transactionType={transactionType}
                         transaction={transaction}
-                        onRemove={handleRemoveTransaction}
-                      /> */}
+                        onRemove={handleRemove}
+                      />
                     </td>
                   </tr>
                 ))}

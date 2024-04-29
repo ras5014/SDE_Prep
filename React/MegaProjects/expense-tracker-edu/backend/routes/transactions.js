@@ -18,8 +18,8 @@ router.post("/addTransaction", async (req, res) => {
   }
 });
 
-router.get("/getTransaction", async (req, res) => {
-  const { type, id } = req.query;
+router.get("/getTransaction/:type/:id", async (req, res) => {
+  const { type, id } = req.params;
 
   try {
     const db = admin.firestore();
@@ -78,8 +78,8 @@ router.put("/editTransaction", async (req, res) => {
 });
 
 // Route to delete a transaction by ID
-router.delete("/deleteTransaction", async (req, res) => {
-  const { type, id } = req.query;
+router.delete("/deleteTransaction/:type/:id", async (req, res) => {
+  const { type, id } = req.params;
 
   try {
     const firestore = admin.firestore();
