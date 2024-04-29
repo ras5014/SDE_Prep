@@ -39,13 +39,13 @@ router.get("/getTransaction", async (req, res) => {
   }
 });
 
-router.get("./getAllTransactions", async (req, res) => {
-  const { type, userId } = req.body;
+router.post("/getAllTransactions", async (req, res) => {
+  const { userId, type } = req.body;
   try {
     const db = admin.firestore();
     const collectionName = type === "income" ? "income" : "expense";
 
-    const transactionsRef = firestore.collection(collectionName);
+    const transactionsRef = db.collection(collectionName);
     const querySnapshot = await transactionsRef
       .where("userId", "==", userId)
       .get();

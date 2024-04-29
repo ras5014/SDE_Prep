@@ -25,7 +25,7 @@ const Login = () => {
 
       if (response.data.success) {
         dispatch(setUser(response.data.user));
-        navigate("/home");
+        navigate("/");
       } else {
         setSignInStatus("Google Sign-In failed");
       }
