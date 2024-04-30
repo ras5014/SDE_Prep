@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const HOST = import.meta.env.VITE_HOST;
 
 const RemoveTransaction = ({ transactionType, transaction, onRemove }) => {
   const navigate = useNavigate();
@@ -9,7 +10,7 @@ const RemoveTransaction = ({ transactionType, transaction, onRemove }) => {
   const handleRemove = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:5000/api/v1/deleteTransaction/${transactionType}/${transaction.formId}`
+        `${HOST}/deleteTransaction/${transactionType}/${transaction.formId}`
       );
       if (response.data.success) {
       }

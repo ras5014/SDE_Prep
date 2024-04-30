@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+const HOST = import.meta.env.VITE_HOST;
 
 const AddTransactionSchema = z.object({
   date: z.string().date("Date is required"),
@@ -40,14 +41,11 @@ const Addtransaction = ({ transactionType }) => {
   const onSubmit = async (formData) => {
     // Axios POST request to add transaction
     try {
-      const response = await axios.post(
-        `http://localhost:5000/api/v1/addTransaction`,
-        {
-          userId: user.uid,
-          type: transactionType,
-          transactionData: formData,
-        }
-      );
+      const response = await axios.post(`${HOST}/addTransaction`, {
+        userId: user.uid,
+        type: transactionType,
+        transactionData: formData,
+      });
       if (response.data.success) {
         navigate(transactionType === "income" ? "/income" : "/expenses");
       } else {

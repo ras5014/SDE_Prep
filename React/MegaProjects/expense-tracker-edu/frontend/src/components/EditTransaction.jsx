@@ -6,6 +6,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+const HOST = import.meta.env.VITE_HOST;
 
 const EditTransactionSchema = z.object({
   date: z.string().date("Date is required"),
@@ -48,7 +49,7 @@ const EditTransaction = ({ transactionType }) => {
     const fetchTransactionData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/getTransaction/${transactionType}/${id}`
+          `${HOST}/getTransaction/${transactionType}/${id}`
         );
 
         if (response.data.success) {
@@ -86,14 +87,11 @@ const EditTransaction = ({ transactionType }) => {
     console.log(formData);
     try {
       // const { id, ...formData } = formData;
-      const response = await axios.put(
-        `http://localhost:5000/api/v1/editTransaction`,
-        {
-          type: transactionType,
-          id: id,
-          transactionData: formData,
-        }
-      );
+      const response = await axios.put(`${HOST}/editTransaction`, {
+        type: transactionType,
+        id: id,
+        transactionData: formData,
+      });
       if (response.data.success) {
         navigate(transactionType === "income" ? "/income" : "/expenses");
       } else {

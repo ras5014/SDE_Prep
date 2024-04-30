@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+const HOST = import.meta.env.VITE_HOST;
 
 export const budgetBuddyApi = createApi({
   reducerPath: "budgetBuddy",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/v1/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${HOST}/` }),
   endpoints: (builder) => ({
     fetchBudget: builder.query({
       query: ({ userId, startDate, endDate }) => ({

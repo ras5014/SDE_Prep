@@ -5,6 +5,7 @@ import { auth } from "../config/firebaseConfig";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/user-slice";
+const HOST = import.meta.env.VITE_HOST;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,12 +17,9 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const idToken = await result.user.getIdToken();
 
-      const response = await axios.post(
-        "http://localhost:5000/api/v1/google-signin",
-        {
-          idToken: idToken,
-        }
-      );
+      const response = await axios.post(`${HOST}/google-signin`, {
+        idToken: idToken,
+      });
 
       if (response.data.success) {
         dispatch(setUser(response.data.user));
