@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Transactions from "./components/Transactions";
 import Addtransaction from "./components/Addtransaction";
 import EditTransaction from "./components/EditTransaction";
+import Budget from "./components/Budget";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
   {
     path: "/getTransaction/income/:id",
     element: <EditTransaction transactionType="income" />,
+  },
+  {
+    path: "/getTransaction/expenses/:id",
+    element: <EditTransaction transactionType="expenses" />,
+  },
+  {
+    path: "/budget",
+    element: <Budget />,
   },
 ]);
 function App() {

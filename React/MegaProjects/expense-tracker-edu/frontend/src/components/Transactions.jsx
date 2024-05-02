@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useFetchAllTransactionsQuery } from "../store/api-service";
 import RemoveTransaction from "./RemoveTransaction";
+import { set } from "firebase/database";
 
 const Transactions = ({ transactionType }) => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const [transactionData, setTransactionData] = useState([]);
   useEffect(() => {
     if (!user.name) navigate("/login");
   }, [user]);
@@ -23,12 +25,22 @@ const Transactions = ({ transactionType }) => {
     }
   );
 
+  useEffect(() => {
+    if (data) {
+      setTransactionData(data.userTransactions);
+    }
+  }, [data]);
+
   const handleEditTransaction = (transaction) => {
     const editTransactionUrl = `/getTransaction/${transactionType}/${transaction.formId}`;
     navigate(editTransactionUrl);
   };
 
-  const handleRemove = () => {};
+  const handleRemove = (transaction) => {
+    setTransactionData((prevState) =>
+      prevState.filter((item) => item.formId !== transaction.formId)
+    );
+  };
 
   return (
     <div>
@@ -54,7 +66,7 @@ const Transactions = ({ transactionType }) => {
             </div>
           </div>
         )}
-        {data && (
+        {transactionData && (
           <>
             <h2>{transactionType === "income" ? "Income" : "Expenses"}</h2>
             <Link
@@ -75,7 +87,7 @@ const Transactions = ({ transactionType }) => {
                 </tr>
               </thead>
               <tbody>
-                {data.userTransactions.map((transaction) => (
+                {transactionData.map((transaction) => (
                   <tr key={transaction.formId}>
                     <td>{transaction.date}</td>
                     <td>

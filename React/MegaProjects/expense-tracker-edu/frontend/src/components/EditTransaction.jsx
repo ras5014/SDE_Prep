@@ -265,7 +265,7 @@ const EditTransaction = ({ transactionType }) => {
                       className="btn btn-outline-success me-2"
                     >
                       <i className="bi bi-save me-2"></i>
-                      {isSubmitting ? "Adding..." : "Add"}
+                      {isSubmitting ? "Updating" : "Update"}
                     </button>
                     <button
                       type="button"

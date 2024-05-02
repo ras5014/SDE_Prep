@@ -13,6 +13,8 @@ const RemoveTransaction = ({ transactionType, transaction, onRemove }) => {
         `${HOST}/deleteTransaction/${transactionType}/${transaction.formId}`
       );
       if (response.data.success) {
+        setShowModalConfirmation(false);
+        onRemove(transaction);
       }
     } catch (error) {
       console.error("Error deleting transaction:", error);
