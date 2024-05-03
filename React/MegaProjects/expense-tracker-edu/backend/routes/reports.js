@@ -49,8 +49,6 @@ const fetchTransactions = async (userId, type, startDate, endDate) => {
     const transactionsSnapshot = await transactionsQuery.get();
     const transactions = transactionsSnapshot.docs.map((doc) => doc.data());
 
-    console.log("transactions", transactions);
-
     // Prepare an object to store the transactions grouped by category
     const transactionsByCategory = {};
 
