@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 // import { useFetchBudgetQuery } from "../store/api-service";
 import axios from "axios";
 const HOST = import.meta.env.VITE_HOST;
+import Graph from "./Graph";
 
 const Home = () => {
   const [dateTime, setDateTime] = useState(null);
@@ -141,7 +142,7 @@ const Home = () => {
               </div>
             </div>
             <div className="col-md-7 mt-5">
-              {/* <Graph graphData={budgetSummary} /> */}
+              <Graph graphData={budgetSummary} />
             </div>
           </div>
         )}
