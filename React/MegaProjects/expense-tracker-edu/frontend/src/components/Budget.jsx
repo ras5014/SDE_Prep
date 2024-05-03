@@ -5,31 +5,156 @@ import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
-import fetchBudget from "../queries/fetchBudget";
+const HOST = import.meta.env.VITE_HOST;
+import axios from "axios";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+const budgetSchema = z.object({
+  groceries: z
+    .string() // Accepts a string input
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "Amount must be a number", // Custom error message for non-numeric values
+    })
+    .refine((value) => parseFloat(value) >= 0, {
+      message: "Amount must be positive",
+    }),
+  health: z
+    .string() // Accepts a string input
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "Amount must be a number", // Custom error message for non-numeric values
+    })
+    .refine((value) => parseFloat(value) >= 0, {
+      message: "Amount must be positive",
+    }),
+  transport: z
+    .string() // Accepts a string input
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "Amount must be a number", // Custom error message for non-numeric values
+    })
+    .refine((value) => parseFloat(value) >= 0, {
+      message: "Amount must be positive",
+    }),
+  accommodation: z
+    .string() // Accepts a string input
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "Amount must be a number", // Custom error message for non-numeric values
+    })
+    .refine((value) => parseFloat(value) >= 0, {
+      message: "Amount must be positive",
+    }),
+  gift: z
+    .string() // Accepts a string input
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "Amount must be a number", // Custom error message for non-numeric values
+    })
+    .refine((value) => parseFloat(value) >= 0, {
+      message: "Amount must be positive",
+    }),
+  other: z
+    .string() // Accepts a string input
+    .refine((value) => !isNaN(parseFloat(value)), {
+      message: "Amount must be a number", // Custom error message for non-numeric values
+    })
+    .refine((value) => parseFloat(value) >= 0, {
+      message: "Amount must be positive",
+    }),
+});
 
 const Budget = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   useEffect(() => {
-    if (!user) {
+    if (!user.name) {
       navigate("/login");
     }
   });
 
   // API call using React-Query
-  const budgetData = useQuery({
-    queryKey: ["budget", user.uid],
-    queryFn: fetchBudget,
-  });
+  // const budgetData = useQuery(["budget", user.uid], fetchBudget);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(budgetSchema),
+  });
 
-  const onSubmit = (formData) => {};
+  // const [budgetData, setBudgetData] = useState({
+  //   groceries: 0,
+  //   health: 0,
+  //   transport: 0,
+  //   accommodation: 0,
+  //   gift: 0,
+  //   other: 0,
+  // });
+  // const [isLoading, setIsLoading] = useState(true);
+  const [alertType, setAlertType] = useState(null);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const queryClient = useQueryClient();
+  const { isPending, error, data } = useQuery({
+    queryKey: ["budget"],
+    queryFn: async () => {
+      const response = await axios.post(`${HOST}/getBudget`, {
+        userId: user.uid,
+      });
+      if (response.data.success) {
+        return response.data.budgetData;
+      } else {
+        setAlertType("error");
+        setAlertMessage("Budget could not be retrieved.");
+        throw new Error("Budget could not be retrieved.");
+      }
+    },
+  });
+
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   const fetchBudget = async () => {
+  //     try {
+  //       const response = await axios.post(`${HOST}/getBudget`, {
+  //         userId: user.uid,
+  //       });
+
+  //       console.log(response.data.budgetData);
+
+  //       if (response.data.success) {
+  //         setBudgetData(response.data.budgetData);
+  //       } else {
+  //         setAlertType("error");
+  //         setAlertMessage("Budget could not be retrieved.");
+  //       }
+  //       setIsLoading(false);
+  //     } catch (err) {
+  //       setAlertType("error");
+  //       setAlertMessage("Budget could not be retrieved.");
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchBudget();
+  // }, []);
+
+  const onSubmit = async (formData) => {
+    try {
+      const response = await axios.post(`${HOST}/saveBudget`, {
+        userId: user.uid,
+        budgetData: formData,
+      });
+
+      if (response.data.success) {
+        setAlertType("success");
+        setAlertMessage("Budget saved successfully.");
+      } else {
+        setAlertType("error");
+        setAlertMessage("Budget could not be retrieved.");
+      }
+    } catch (error) {
+      setAlertType("error");
+      setAlertMessage("Budget could not be saved.");
+    }
+  };
   const handleCancel = () => {
     navigate("/");
   };
@@ -38,7 +163,7 @@ const Budget = () => {
     <div>
       <Navbar />
       <div className="container mt-4">
-        {budgetData.isLoading && (
+        {isPending && (
           <div
             className="d-flex align-items-center justify-content-center"
             style={{ minHeight: "80vh" }}
@@ -50,8 +175,9 @@ const Budget = () => {
             </div>
           </div>
         )}
-        {budgetData.isSuccess && (
+        {data && (
           <>
+            <h2>{data.groceries}</h2>
             <h2>Budget Allocation</h2>
             <div className="row mt-5">
               <div className="col-md-6 offset-md-3">
@@ -67,8 +193,13 @@ const Budget = () => {
                         type="number"
                         className="form-control"
                         {...register("groceries")}
-                        defaultValue={budgetData.groceries}
+                        defaultValue={data.groceries}
                       />
+                      {errors.groceries && (
+                        <p className="text-danger">
+                          {errors.groceries.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="input-group mb-3">
@@ -82,8 +213,11 @@ const Budget = () => {
                         type="number"
                         className="form-control"
                         {...register("health")}
-                        value={budgetData.health}
+                        defaultValue={data.health}
                       />
+                      {errors.health && (
+                        <p className="text-danger">{errors.health}</p>
+                      )}
                     </div>
                   </div>
                   <div className="input-group mb-3">
@@ -97,8 +231,11 @@ const Budget = () => {
                         type="number"
                         className="form-control"
                         {...register("transport")}
-                        defaultValue={budgetData.transport}
+                        defaultValue={data.transport}
                       />
+                      {errors.transport && (
+                        <p className="text-danger">{errors.transport}</p>
+                      )}
                     </div>
                   </div>
                   <div className="input-group mb-3">
@@ -112,8 +249,11 @@ const Budget = () => {
                         type="number"
                         className="form-control"
                         {...register("accommodation")}
-                        defaultValue={budgetData.accommodation}
+                        defaultValue={data.accommodation}
                       />
+                      {errors.accommodation && (
+                        <p className="text-danger">{errors.accommodation}</p>
+                      )}
                     </div>
                   </div>
                   <div className="input-group mb-3">
@@ -127,8 +267,11 @@ const Budget = () => {
                         type="number"
                         className="form-control"
                         {...register("gift")}
-                        defaultValue={budgetData.gift}
+                        defaultValue={data.gift}
                       />
+                      {errors.gift && (
+                        <p className="text-danger">{errors.gift}</p>
+                      )}
                     </div>
                   </div>
                   <div className="input-group mb-3">
@@ -142,8 +285,11 @@ const Budget = () => {
                         type="number"
                         className="form-control"
                         {...register("other")}
-                        defaultValue={budgetData.other}
+                        defaultValue={data.other}
                       />
+                      {errors.other && (
+                        <p className="text-danger">{errors.other}</p>
+                      )}
                     </div>
                   </div>
                   <div className="mb-3 text-center">
@@ -162,6 +308,25 @@ const Budget = () => {
                     </button>
                   </div>
                 </form>
+                {alertMessage && (
+                  <div
+                    className={`alert ${
+                      alertType === "success" ? "alert-success" : "alert-danger"
+                    } mt-5`}
+                    role="alert"
+                  >
+                    <div>
+                      <i
+                        className={`bi ${
+                          alertType === "success"
+                            ? "bi-check-circle-fill"
+                            : "bi-exclamation-triangle-fill"
+                        } m-2`}
+                      ></i>
+                      {alertMessage}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </>

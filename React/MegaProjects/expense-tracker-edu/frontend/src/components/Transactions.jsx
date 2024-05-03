@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useFetchAllTransactionsQuery } from "../store/api-service";
 import RemoveTransaction from "./RemoveTransaction";
-import { set } from "firebase/database";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+const HOST = import.meta.env.VITE_HOST;
+import axios from "axios";
+import { query } from "firebase/firestore";
+// import { useFetchAllTransactionsQuery } from "../store/api-service";
 
 const Transactions = ({ transactionType }) => {
   const user = useSelector((state) => state.user);
@@ -14,22 +17,41 @@ const Transactions = ({ transactionType }) => {
     if (!user.name) navigate("/login");
   }, [user]);
 
-  const { data, error, isLoading } = useFetchAllTransactionsQuery(
-    {
-      userId: user.uid,
-      type: transactionType,
+  // React-Query (Since we don't need this data to be stored in Redux store, we can use React-Query to fetch data from the server)
+  const queryClient = useQueryClient(); // For accessing the client
+  const { isPending, error, data } = useQuery({
+    queryKey: ["transactions"],
+    queryFn: async () => {
+      const apiRes = await axios.post(`${HOST}/getAllTransactions`, {
+        userId: user.uid,
+        type: transactionType,
+      });
+      if (apiRes.data.success) setTransactionData(apiRes.data.userTransactions);
+      return apiRes.data;
     },
-    {
-      skip: !user.uid || !transactionType, // Skip the query if userId or transactionType is not available
-      refetchOnMountOrArgChange: true, // Ensure data is fetched when component mounts or arguments change
-    }
-  );
+  });
 
   useEffect(() => {
-    if (data) {
-      setTransactionData(data.userTransactions);
-    }
-  }, [data]);
+    queryClient.invalidateQueries(["transactions"]);
+  }, [transactionType]);
+
+  // RTL-Query Section to get Transaction Data and setState of transactionData
+  // const { data, error, isLoading } = useFetchAllTransactionsQuery(
+  //   {
+  //     userId: user.uid,
+  //     type: transactionType,
+  //   },
+  //   {
+  //     skip: !user.uid || !transactionType, // Skip the query if userId or transactionType is not available
+  //     refetchOnMountOrArgChange: true, // Ensure data is fetched when component mounts or arguments change
+  //   }
+  // );
+
+  // useEffect(() => {
+  //   if (data) {
+  //     setTransactionData(data.userTransactions);
+  //   }
+  // }, [data]);
 
   const handleEditTransaction = (transaction) => {
     const editTransactionUrl = `/getTransaction/${transactionType}/${transaction.formId}`;
@@ -46,7 +68,7 @@ const Transactions = ({ transactionType }) => {
     <div>
       <Navbar />
       <div className="container mt-4">
-        {isLoading && (
+        {isPending && (
           <div
             className="d-flex align-items-center justify-content-center"
             style={{ minHeight: "80vh" }}
@@ -66,7 +88,7 @@ const Transactions = ({ transactionType }) => {
             </div>
           </div>
         )}
-        {transactionData && (
+        {data && (
           <>
             <h2>{transactionType === "income" ? "Income" : "Expenses"}</h2>
             <Link

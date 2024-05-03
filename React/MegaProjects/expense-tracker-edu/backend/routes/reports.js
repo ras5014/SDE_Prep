@@ -3,16 +3,18 @@ const router = express.Router();
 const admin = require("firebase-admin");
 
 const fetchBudget = async (userId) => {
-  const db = admin.firestore();
-  const budgetCollectionRef = db.collection("budgets");
+  const firestore = admin.firestore();
+  const budgetCollectionRef = firestore.collection("budget");
 
   try {
     const budgetSnapshot = await budgetCollectionRef
       .where("userId", "==", userId)
+      .limit(1)
       .get();
     if (!budgetSnapshot.empty) {
       return budgetSnapshot.docs[0].data();
     } else {
+      // If the document doesn’t exist, return all fields as 0
       const budgetData = {
         groceries: 0,
         health: 0,
@@ -21,31 +23,48 @@ const fetchBudget = async (userId) => {
         gift: 0,
         other: 0,
       };
+      // Send the default form data as the response
       return budgetData;
     }
-  } catch (err) {
-    console.log("Error getting budget data: ", err);
+  } catch (error) {
+    console.error("Error fetching budget data:", error);
+    return null;
   }
 };
 
+// Fetch income/expense transaction data
 const fetchTransactions = async (userId, type, startDate, endDate) => {
-  const db = admin.firestore();
+  const firestore = admin.firestore();
   const collectionName = type === "income" ? "income" : "expense";
-  const transactionCollectionRef = db.collection(collectionName);
+  const transactionsCollectionRef = firestore.collection(collectionName);
 
   try {
-    const transactionSnapshot = await transactionCollectionRef
-      .where("userId", "==", userId)
-      .where("date", ">=", startDate)
-      .where("date", "<=", endDate)
-      .get();
-    const transactions = transactionSnapshot.docs.map((doc) => doc.data());
+    // Construct the query to filter transactions based on userId and date range
+    const transactionsQuery = transactionsCollectionRef.where(
+      "userId",
+      "==",
+      userId
+    );
+    // .where("date", ">=", startDate)
+    // .where("date", "<=", endDate);
 
+    // Fetch the transactions that match the query
+    const transactionsSnapshot = await transactionsQuery.get();
+    const transactions = transactionsSnapshot.docs.map((doc) => doc.data());
+
+    console.log("transactions", transactions);
+
+    // Prepare an object to store the transactions grouped by category
     const transactionsByCategory = {};
+
+    // Calculate the total of all transactions
     let totalAmount = 0;
 
-    transactions.map((transaction) => {
+    // Iterate through the documents and group transactions by category while summing the amounts
+    transactions.forEach((transaction) => {
       const { category, amount } = transaction;
+
+      // Add the transaction amount to the corresponding category sum
       transactionsByCategory[category] = transactionsByCategory[category] || {
         sum: 0,
         transactions: [],
@@ -53,18 +72,22 @@ const fetchTransactions = async (userId, type, startDate, endDate) => {
       transactionsByCategory[category].sum += parseFloat(amount);
       transactionsByCategory[category].transactions.push(transaction);
 
+      // Add the transaction amount to the total
       totalAmount += parseFloat(amount);
-
-      return { transactions, transactionsByCategory, totalAmount };
     });
-  } catch (err) {
+
+    // Return the transactions, transactions grouped by category, and the total amount
+    return { transactions, transactionsByCategory, totalAmount };
+  } catch (error) {
     console.error("Error fetching transactions:", error);
     return [];
   }
 };
 
-const getBudgetSummary = async (budget, transactionsByCategory) => {
+// Function to get the budget summary
+const getBudgetSummary = (budget, transactionsByCategory) => {
   const combinedArray = [];
+
   for (let key of Object.keys(budget)) {
     if (key !== "userId") {
       const amountAllocated = budget[key];
@@ -83,9 +106,11 @@ const getBudgetSummary = async (budget, transactionsByCategory) => {
   return combinedArray;
 };
 
+// Route to get all budget, income, and expense data for a user
 router.post("/getReportsData", async (req, res) => {
   try {
     const { userId, startDate, endDate } = req.body;
+
     const budget = await fetchBudget(userId);
     const income = await fetchTransactions(
       userId,
@@ -99,11 +124,14 @@ router.post("/getReportsData", async (req, res) => {
       startDate,
       endDate
     );
+
+    // Call the getBudgetSummary() function to get the budget summary
     const budgetSummary = getBudgetSummary(
       budget,
       expenses.transactionsByCategory
     );
 
+    // Combine the income and expense data into a single response object
     const responseData = {
       success: true,
       budget: budget,
@@ -112,9 +140,10 @@ router.post("/getReportsData", async (req, res) => {
       budgetSummary: budgetSummary,
     };
 
-    res.status(200).json(responseData);
+    res.json(responseData);
   } catch (error) {
-    console.error("Error fetching reports data:", error);
+    console.error("Error fetching budget data:", error);
+    // Send an error response to the frontend
     res.status(500).json({ success: false });
   }
 });

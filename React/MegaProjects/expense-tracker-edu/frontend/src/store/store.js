@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user-slice";
+import { setupListeners } from "@reduxjs/toolkit/query";
 import { budgetBuddyApi } from "./api-service";
 
 const store = configureStore({
@@ -11,4 +12,5 @@ const store = configureStore({
     getDefaultMiddleware().concat(budgetBuddyApi.middleware),
 });
 
+setupListeners(store.dispatch);
 export default store;

@@ -6,23 +6,36 @@ router.post("/saveBudget", async (req, res) => {
   const { budgetData, userId } = req.body;
 
   try {
+    // Add the userId field to the formData object
     budgetData.userId = userId;
-    const db = admin.firestore();
-    const budgetRef = db.collection("budgets");
-    const querySnapshot = await budgetRef
+
+    const firestore = admin.firestore();
+    const budgetCollectionRef = firestore.collection("budget");
+
+    // Query the documents based on userId and get the first matching document
+    const querySnapshot = await budgetCollectionRef
       .where("userId", "==", userId)
       .limit(1)
       .get();
-    let budgetData;
+
+    let budgetDataRef;
+
     if (querySnapshot.empty) {
-      budgetData = budgetRef.doc();
+      // If no document matches userId, create a new document with a random document ID
+      budgetDataRef = budgetCollectionRef.doc();
     } else {
-      budgetData = querySnapshot.docs[0].ref;
+      // If a document matches userId, use the first matching document
+      budgetDataRef = querySnapshot.docs[0].ref;
     }
-    await budgetData.set(budgetData, { merge: true });
-    res.status(200).json({ success: true });
-  } catch (err) {
-    console.error("Error saving budget data: ", err);
+
+    // Save or update the form data in Firestore
+    await budgetDataRef.set(budgetData, { merge: true });
+
+    // Send a success response to the frontend
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error saving budget data:", error);
+    // Send an error response to the frontend
     res.status(500).json({ success: false });
   }
 });
@@ -31,7 +44,7 @@ router.post("/getBudget", async (req, res) => {
   const { userId } = req.body;
   try {
     const db = admin.firestore();
-    const budgetRef = db.collection("budgets");
+    const budgetRef = db.collection("budget");
 
     const budgetDataSnapshot = await budgetRef
       .where("userId", "==", userId)

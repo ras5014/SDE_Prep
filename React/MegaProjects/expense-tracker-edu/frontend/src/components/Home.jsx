@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useFetchBudgetQuery } from "../store/api-service";
+// import { useFetchBudgetQuery } from "../store/api-service";
+import axios from "axios";
+const HOST = import.meta.env.VITE_HOST;
 
 const Home = () => {
   const [dateTime, setDateTime] = useState(null);
@@ -12,31 +14,60 @@ const Home = () => {
   const startDate = new Date(new Date().getFullYear(), 0, 1).toISOString();
   const endDate = new Date().toISOString();
 
-  // Getting BudgetData
-  const { data, error, isLoading, isSuccess } = useFetchBudgetQuery({
-    userId: user.uid,
-    startDate: startDate,
-    endDate: endDate,
-  });
-
   useEffect(() => {
     if (!user.name) navigate("/login");
   }, [user]);
 
-  const getDateTime = () => {
-    setDateTime(
-      new Date().toLocaleString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      })
-    );
-    return dateTime;
-  };
+  // Getting BudgetData
+  const [budgetSummary, setBudgetSummary] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [alertType, setAlertType] = useState(null);
+  const [alertMessage, setAlertMessage] = useState(null);
+  useEffect(() => {
+    if (user) {
+      setIsLoading(true); // Set loading state to true while data is fetched
+      const fetchBudget = async () => {
+        try {
+          const response = await axios.post(`${HOST}/getReportsData`, {
+            userId: user.uid,
+            startDate: new Date(new Date().getFullYear(), 0, 1),
+            endDate: new Date(),
+          });
+
+          console.log(response.data);
+
+          if (response.data.success) {
+            // Update the state with the fetched data
+            setBudgetSummary(response.data.budgetSummary);
+          } else {
+            setAlertType("error");
+            setAlertMessage("Budget data could not be retrieved.");
+          }
+
+          setDateTime(
+            new Date().toLocaleString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })
+          );
+
+          setIsLoading(false); // Set loading state to false after data is fetched
+        } catch (error) {
+          console.log(error);
+          setAlertType("error");
+          setAlertMessage("Budget data could not be retrieved.");
+          setIsLoading(false); // Set loading state to false if there's an error
+        }
+      };
+
+      fetchBudget();
+    }
+  }, []);
 
   return (
     <div>
@@ -44,7 +75,7 @@ const Home = () => {
       <div className="container mt-4">
         {user && <h2>Hello, {user.name}!</h2>}
 
-        {error && (
+        {alertMessage && (
           <div className={`alert ${"alert-danger"} mt-5`} role="alert">
             <div>
               <i className={`bi ${"bi-exclamation-triangle-fill"} m-2`}></i>
@@ -66,7 +97,7 @@ const Home = () => {
           </div>
         )}
 
-        {data && (
+        {budgetSummary && (
           <div className="row">
             <div className="col-md-5 mt-5">
               <div className="card text-center">
@@ -82,7 +113,7 @@ const Home = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data.map((item) => (
+                      {budgetSummary.map((item) => (
                         <tr key={item.key}>
                           <td>
                             {item.key.charAt(0).toUpperCase() +
@@ -107,13 +138,13 @@ const Home = () => {
                   </table>
                 </div>
                 <div className="card-footer text-body-secondary">
-                  <i>As of: {getDateTime}</i>
+                  <i>As of: {dateTime}</i>
                 </div>
               </div>
             </div>
-            {/* <div className="col-md-7 mt-5">
-              <Graph graphData={data} />
-            </div> */}
+            <div className="col-md-7 mt-5">
+              {/* <Graph graphData={budgetSummary} /> */}
+            </div>
           </div>
         )}
       </div>
