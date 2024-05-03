@@ -40,13 +40,10 @@ const fetchTransactions = async (userId, type, startDate, endDate) => {
 
   try {
     // Construct the query to filter transactions based on userId and date range
-    const transactionsQuery = transactionsCollectionRef.where(
-      "userId",
-      "==",
-      userId
-    );
-    // .where("date", ">=", startDate)
-    // .where("date", "<=", endDate);
+    const transactionsQuery = transactionsCollectionRef
+      .where("userId", "==", userId)
+      .where("date", ">=", startDate)
+      .where("date", "<=", endDate);
 
     // Fetch the transactions that match the query
     const transactionsSnapshot = await transactionsQuery.get();

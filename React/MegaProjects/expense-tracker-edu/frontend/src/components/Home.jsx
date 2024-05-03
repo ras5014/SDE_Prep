@@ -34,8 +34,6 @@ const Home = () => {
             endDate: new Date(),
           });
 
-          console.log(response.data);
-
           if (response.data.success) {
             // Update the state with the fetched data
             setBudgetSummary(response.data.budgetSummary);
@@ -120,17 +118,17 @@ const Home = () => {
                               item.key.slice(1)}
                           </td>
                           <td>
-                            ${parseFloat(item.amountAllocated).toLocaleString()}
+                            ₹{parseFloat(item.amountAllocated).toLocaleString()}
                           </td>
                           <td>
-                            ${parseFloat(item.amountSpent).toLocaleString()}
+                            ₹{parseFloat(item.amountSpent).toLocaleString()}
                           </td>
                           <td>
                             {item.amountRemaining < 0
                               ? `-$${Math.abs(
                                   item.amountRemaining
                                 ).toLocaleString()}`
-                              : `$${item.amountRemaining.toLocaleString()}`}
+                              : `₹${item.amountRemaining.toLocaleString()}`}
                           </td>
                         </tr>
                       ))}

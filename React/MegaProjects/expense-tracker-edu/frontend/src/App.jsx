@@ -6,6 +6,7 @@ import Transactions from "./components/Transactions";
 import Addtransaction from "./components/Addtransaction";
 import EditTransaction from "./components/EditTransaction";
 import Budget from "./components/Budget";
+import Reports from "./components/Reports";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
   {
     path: "/budget",
     element: <Budget />,
+  },
+  {
+    path: "/reports",
+    element: <Reports />,
   },
 ]);
 function App() {

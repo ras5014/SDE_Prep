@@ -8,8 +8,17 @@ import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 const HOST = import.meta.env.VITE_HOST;
 
+const today = new Date();
 const AddTransactionSchema = z.object({
-  date: z.string().date("Date is required"),
+  date: z.string().refine(
+    (value) => {
+      const providedDate = new Date(value);
+      return providedDate <= today;
+    },
+    {
+      message: "Date must be today or earlier",
+    }
+  ),
   amount: z
     .string() // Accepts a string input
     .refine((value) => !isNaN(parseFloat(value)), {
