@@ -177,7 +177,6 @@ const Budget = () => {
         )}
         {data && (
           <>
-            <h2>{data.groceries}</h2>
             <h2>Budget Allocation</h2>
             <div className="row mt-5">
               <div className="col-md-6 offset-md-3">
