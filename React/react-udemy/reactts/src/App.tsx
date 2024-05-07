@@ -1,13 +1,12 @@
 import './App.css'
 
 function App() {
-  const add = (a: number, b: number) => {
-    return a + b;
-  }
+
+  let course: string | number = 4;
   return (
     <>
       <h1>TypeScript</h1>
-      <h2>{add(5, 7)}</h2>
+      <h2>{course}</h2>
     </>
   )
 }
