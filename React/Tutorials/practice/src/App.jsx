@@ -1,10 +1,9 @@
 import "./App.css";
-import Accordion from "./components/Accordion";
 
 function App() {
   return (
     <>
-      <Accordion />
+      <h1>useMemo</h1>
     </>
   );
 }
