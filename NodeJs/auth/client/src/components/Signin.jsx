@@ -12,6 +12,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import GoogleIcon from "@mui/icons-material/Google";
 import axios from "axios";
 
 function Copyright(props) {
@@ -114,6 +115,7 @@ export default function Signin() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
+
               <Button
                 type="submit"
                 fullWidth
@@ -132,6 +134,24 @@ export default function Signin() {
                   <Link href="#" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
+                </Grid>
+              </Grid>
+              <Grid container>
+                <Grid item xs>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      backgroundColor: "red",
+                      "&:hover": { backgroundColor: "grey" },
+                    }}
+                    startIcon={<GoogleIcon />}
+                  >
+                    Sign In with Google
+                  </Button>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
