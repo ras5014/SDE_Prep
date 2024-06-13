@@ -6,13 +6,9 @@ export const getBreeds = async ({ queryKey }) => {
   if (!animal) {
     return [];
   }
-  const apiRes = axios.get(
+  const apiRes = await axios.get(
     `http://pets-v2.dev-apis.com/breeds?animal=${animal}`
   );
 
-  if (!apiRes.ok) {
-    throw new Error("Something went wrong");
-  }
-
-  return apiRes.json();
+  return apiRes.data.breeds;
 };

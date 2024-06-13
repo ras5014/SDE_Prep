@@ -3,7 +3,9 @@ import SearchParams from "./components/SearchParams"
 function App() {
   return (
     <div>
-      <h1>Adopt Me!</h1>
+      <header>
+        <a href="/">Adopt Me!</a>
+      </header>
       <SearchParams />
     </div>
   )
