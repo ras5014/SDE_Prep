@@ -16,3 +16,14 @@ console.log("After Unshift 'x': ", s);
 // Splice (Add/Remove an element from the middle of the array) -> O(n)
 s.splice(2, 0, "alien");
 console.log("After Splice: ", s);
+
+// Search and delete/add an element from the middle of the array
+let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+console.log("Before: ", nums);
+const index = nums.indexOf(5);
+nums.splice(index, 1);
+console.log("After: ", nums);
+// Wanna delete and some elements from the middle of the array at 4
+const index1 = nums.indexOf(4);
+nums.splice(index1, 1, 11, 12);
+console.log("After: ", nums);
