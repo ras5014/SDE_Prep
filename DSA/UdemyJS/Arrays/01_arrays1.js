@@ -13,6 +13,9 @@ console.log("After Pop: ", s);
 s.unshift("x");
 console.log("After Unshift 'x': ", s);
 
+// Shift (Remove an element from the start of the array & return that element) -> O(n)
+console.log("Shifted Element: ", s.shift());
+
 // Splice (Add/Remove an element from the middle of the array) -> O(n)
 s.splice(2, 0, "alien");
 console.log("After Splice: ", s);

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  #BACKEND
+  express-api:
+    container_name: BACKEND
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/test
+    volumes:
+      - .:/usr/src/app
+    command: npm run dev
+  
+  #DB
+  mongo:
+    container_name: MONGO
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=test
+
