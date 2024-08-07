@@ -8,7 +8,8 @@ print(f"{a} {b}")
 
 # Increment/Decrement
 num = 5
-print(num+1)
+num = num + 1  # num += 1 also works, but can't do num++ or num--
+print(num)
 
 # None is null in Python (Absence of value)
 num = None
