@@ -1,0 +1,40 @@
+================
+1.BACKEND SETUP
+================
+-Setup Backend
+-npm i express cors dotenv mongodb mongoose
+-npm i ts-node typescript nodemon @types/express @types/cors @types/node --save-dev
+-change main to ./src/index.ts
+-scripts to "dev": "nodemon"
+-To generate typescript config -> npx tsc --init
+-Add src and index.ts folder inside it
+-Setup express server on port 7000 with (cors, dotenv)
+
+=================
+2.FRONTEND SETUP
+=================
+-Setup shadcn/ui on vite (use shadcn docs -> https://ui.shadcn.com/docs/installation/vite)
+-Answer the questions during shadcn setup
+
+			Would you like to use TypeScript (recommended)? yes
+			Which style would you like to use? › New York
+			Which color would you like to use as base color? › Slate
+			Where is your global CSS file? › › src/global.css
+			Do you want to use CSS variables for colors? › yes
+			Where is your tailwind.config.js located? › tailwind.config.js
+			Configure the import alias for components: › @/components
+			Configure the import alias for utils: › @/lib/utils
+			Are you using React Server Components? › no / yes (no)
+
+=================
+3.DATABASE SETUP
+=================
+-setup mongodb Atlas
+-setup "mern_food_ordering_app" as database name
+-In backend inside .env put MONGODB_URI
+-Do mongoose setup i.e. mongoose.connect on server
+
+=====================
+4.REACT-ROUTER Setup
+=====================
+
