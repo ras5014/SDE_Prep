@@ -1,0 +1,29 @@
+/* Roboto Theme for MUI */
+@import url('@fontsource/roboto/300.css');
+@import url('@fontsource/roboto/400.css');
+@import url('@fontsource/roboto/500.css');
+@import url('@fontsource/roboto/700.css');
+
+/* This will apply CSS to all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto';
+}
+
+body {
+    background-color: #F8EDE3;
+}
+
+.tourImg {
+    width: 100%;
+    height: 5rem;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+

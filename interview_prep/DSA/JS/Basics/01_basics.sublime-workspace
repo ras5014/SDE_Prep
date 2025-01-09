@@ -1,0 +1,282 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "// word (a, b) vs keyword (if, for)\n\n// var vs let vs const (Explained in next section)\n\n// hoisting (works with var, not with let)\n\na = 4;\nconsole.log(a); // 4\nvar a = 5; // At this step \"var a\" goes to the top of the code\nconsole.log(a); // 5\n\n// undefined -> the variable is there, but its value we don't know\n// not-defined -> the variable is not there, It's not defined\n\n// Types in JS\n// Primitive - If we copy then only the value is copied not reference\n// Reference [], {}, () - If we copy then a reference is copied, not thel value\n// Brackets means reference, no brackets means primitive\n\nvar arr = [12, 13];\nvar brr = arr;\n\nbrr.pop();\n//arr will also change here cause of pop of brr\nconsole.log(arr, brr); // [12] [12] // Both are same cause reference is copied\n// In case you don't want to copy reference then use spread operator\nvar arr1 = [12, 13];\nvar brr1 = [...arr1];\n// or use slice() method\nvar brr2 = arr1.slice();\n\n// Primitive\nvar a1 = 5;\nvar b1 = a1;\nb1 = 7;\n//a1 won't change here\nconsole.log(a1, b1); // 5 7 // Both are different cause value is copied not reference\n\nif (-1) {\n  console.log(\"I am true\"); // This will print only 0 is false, -1 is truthy value\n}\n\n8870\n2320\n",
+			"file": "01_basics.js",
+			"file_size": 1234,
+			"file_write_time": 133798894900564534,
+			"settings":
+			{
+				"buffer_size": 1198,
+				"line_ending": "Windows"
+			},
+			"undo_stack":
+			[
+				[
+					3,
+					1,
+					"insert",
+					{
+						"characters": "\n\n88"
+					},
+					"BAAAAKgEAAAAAAAAqQQAAAAAAAAAAAAAqQQAAAAAAACqBAAAAAAAAAAAAACqBAAAAAAAAKsEAAAAAAAAAAAAAKsEAAAAAAAArAQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAqAQAAAAAAACoBAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					4,
+					1,
+					"insert",
+					{
+						"characters": "70"
+					},
+					"AgAAAKwEAAAAAAAArQQAAAAAAAAAAAAArQQAAAAAAACuBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAArAQAAAAAAACsBAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					5,
+					1,
+					"insert",
+					{
+						"characters": "\n2323"
+					},
+					"BQAAAK4EAAAAAAAArwQAAAAAAAAAAAAArwQAAAAAAACwBAAAAAAAAAAAAACwBAAAAAAAALEEAAAAAAAAAAAAALEEAAAAAAAAsgQAAAAAAAAAAAAAsgQAAAAAAACzBAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAArgQAAAAAAACuBAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					6,
+					1,
+					"left_delete",
+					null,
+					"AQAAALIEAAAAAAAAsgQAAAAAAAABAAAAMw",
+					"AQAAAAAAAAABAAAAswQAAAAAAACzBAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					7,
+					1,
+					"insert",
+					{
+						"characters": "0"
+					},
+					"AQAAALIEAAAAAAAAswQAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAsgQAAAAAAACyBAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					11,
+					1,
+					"insert",
+					{
+						"characters": "       "
+					},
+					"CAAAABUCAAAAAAAAFgIAAAAAAAAAAAAAFgIAAAAAAAAWAgAAAAAAAAYAAAAgYWN0dWEWAgAAAAAAABcCAAAAAAAAAAAAABcCAAAAAAAAGAIAAAAAAAAAAAAAGAIAAAAAAAAZAgAAAAAAAAAAAAAZAgAAAAAAABoCAAAAAAAAAAAAABoCAAAAAAAAGwIAAAAAAAAAAAAAGwIAAAAAAAAcAgAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAFQIAAAAAAAAbAgAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					12,
+					7,
+					"left_delete",
+					null,
+					"BwAAABsCAAAAAAAAGwIAAAAAAAABAAAAIBoCAAAAAAAAGgIAAAAAAAABAAAAIBkCAAAAAAAAGQIAAAAAAAABAAAAIBgCAAAAAAAAGAIAAAAAAAABAAAAIBcCAAAAAAAAFwIAAAAAAAABAAAAIBYCAAAAAAAAFgIAAAAAAAABAAAAIBUCAAAAAAAAFQIAAAAAAAABAAAAIA",
+					"AQAAAAAAAAABAAAAHAIAAAAAAAAcAgAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/Learn/SDE_Prep/MegaProjects/eCommerce_Udemy/readme.md",
+		"/D/LifeStyle Changes",
+		"/C/Users/raman/OneDrive/Desktop/PC",
+		"/D/Learn/SDE_Prep/MegaProjects/work to be done"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "01_basics.js",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1198,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								533,
+								533
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 320.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "01_basics.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

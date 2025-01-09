@@ -1,0 +1,300 @@
+**Docker**
+To run docker compose -> docker compose up (--build if you want to rebuild) (--watch if you want to watch for changes)
+To see running containers -> docker ps
+To enter into bash of container -> docker exec -it <container-id> /bin/bash
+
+**PRISMA NOTES
+=================================
+
+To install prisma to the project -> npx prisma init 
+
+After making the changes to schema.prisma -> npx prisma db push
+    - Creates db and in our db is in sync with our schema.prisma
+    - Installs prisma client to the project (Use npx prisma generate OR pnpm dlx prisma generate)
+    - Gives information about the db to prisma client
+
+To see our DB -> npx prisma studio
+
+To instantiate prisma client in nextjs
+    - follow docs -> https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
+    - This is to not instantiate prisma client in every file and not open multiple connections to the db
+
+To read faster we index our db
+    - Use @@index(field-name) see schema.prisma file for more info
+
+
+CRUD operations
+----------------------------------
+Get all records from db
+    - const posts = await prisma.post.findMany()
+
+Filtering records
+    Get all published posts
+    - const posts = await prisma.post.findMany()
+
+    Get all published posts ordered by creation date and select only id, title, content
+    - const posts = await prisma.post.findMany({
+        where: { published: true },
+        orderBy: { createdAt: 'desc' },
+        select: { id: true, title: true, content: true }
+      })
+
+Pagination
+    - const posts = await prisma.post.findMany({
+         take: 1, // FIrst {take} no of posts
+        skip: 1 // Skip {skip} no of posts
+      })
+    After skipping first 2 records, it will show 2 records
+    
+    - For more about pagination visit -> https://www.prisma.io/docs/orm/prisma-client/queries/pagination
+
+Counting records
+    - const count = await prisma.post.count()
+
+Adding new record
+    - const post = await prisma.post.create({
+        data: {
+            title: 'My first post',
+            content: 'This is my first post',
+        }
+    })
+
+Updating existing record
+    - await prisma.post.update({
+        where: {
+          id: 1,
+        },
+        data: {
+          title: "newTitle",
+          content: "newContent",
+        },
+      });
+
+Deleting existing record
+    - await prisma.post.delete({
+        where: {
+          id: 1,
+        },
+      });
+
+Prisma Relationships
+==================================
+One to Many
+----------------------------------model User {
+  id             String  @id @default(cuid())
+  email          String  @unique
+  name           String?
+  hashedPassword String?
+  posts          Post[]  // You just need to add this line
+  // This is a one-to-many relationship (one user can have many posts)
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String
+  published Boolean? @default(false) // This is optional
+  updateAt  DateTime @updatedAt
+  createAt  DateTime @default(now())
+  User      User?    @relation(fields: [userId], references: [id])  // This ll be added automatically
+  userId    String?  // This ll be added automatically
+
+  @@index(slug) // This is an index on the slug column to speed up queries
+}
+
+Later we can change the field names as per our liking
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String
+  published Boolean? @default(false) // This is optional
+  updateAt  DateTime @updatedAt
+  createAt  DateTime @default(now())
+  author    User?    @relation(fields: [authorId], references: [id]) // Here User is changed to author
+  authorId  String?  // After changing the field name, we need to change this and fields
+
+  @@index(slug)
+}
+
+Many to Many
+----------------------------------
+model User {
+  id             String  @id @default(cuid())
+  email          String  @unique
+  name           String?
+  hashedPassword String?
+  posts          Post[]  // One User can have many posts, Add this and delete from post the created lines
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String
+  published Boolean? @default(false) // This is optional
+  updateAt  DateTime @updatedAt
+  createAt  DateTime @default(now())
+  authors   User[]      // One Post can have many authors
+}
+
+By doing this PRISMA will create a many to many relationship behind the scene
+
+One to One
+----------------------------------
+
+Here one user can have only one post and one post can have only one user
+
+model User {
+  id             String  @id @default(cuid())
+  email          String  @unique
+  name           String?
+  hashedPassword String?
+  // You just need to add this line
+  posts          Post?     // Delete array part, If you add ? then user can have 0 or 1 post
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  content   String
+  published Boolean? @default(false) // This is optional
+  updateAt  DateTime @updatedAt
+  createAt  DateTime @default(now())
+  author    User?    @relation(fields: [authorId], references: [id]) 
+  authorId  String?  @unique  // After adding unique this becomes 1 to 1 relationship
+
+  @@index(slug)
+}
+
+  Changes related to when we add relationships
+  -----------------------------------------------------
+  -> Include the posts of the user, It will return relation data only if you add include
+
+      const posts = await prisma.post.findUnique({
+        where: {
+        email: "jon@gmail.com",
+        },
+        include: {       
+          posts: true,
+        },
+      });
+
+  -> Create a new post and connect it to a specific user
+
+        const post = await prisma.post.create({
+          data: {
+            title: "My first post",
+            content: "This is my first post",
+            author: {
+              connect: {
+                email: "jon@gmail.com",
+              },
+            },
+          },
+        });
+
+
+Seeding the database
+----------------------------------
+  -> Follow this link -> https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding
+  -> Create a file called seed.ts in the prisma directory
+
+  -> Add the following code to the seed.ts file
+
+      import { PrismaClient } from "@prisma/client";
+      const prisma = new PrismaClient();
+
+      // Create posts array
+
+      const posts = [
+        {
+          title: "Post 1",
+          content: "This is the content of post 1",
+          slug: "post-1",
+          author: {
+            connectOrCreate: {
+              where: {
+                email: "test@test.com",
+              },
+              create: {
+                email: "test@test.com",
+                name: "Test User",
+              },
+            },
+          },
+        },
+      ];
+      async function main() {
+        console.log(`Start seeding ...`);
+        for (const p of posts) {
+          const post = await prisma.post.create({
+            data: p,
+          });
+          console.log(`Created post with id: ${post.id}`);
+        }
+        console.log(`Seeding finished.`);
+      }
+      main()
+        .then(async () => {
+          await prisma.$disconnect();
+        })
+        .catch(async (e) => {
+          console.error(e);
+          await prisma.$disconnect();
+          process.exit(1);
+        });
+
+    -> Run the seed.ts file using the following command
+      -> Add the following line to the package.json file (As mentioned in the link above)
+      -> npx prisma db seed
+
+
+Handle errors in prisma
+============================================================
+  -> You can see the error codes in the prisma documentation -> https://www.prisma.io/docs/orm/reference/error-reference
+    // Create post
+    export async function createPost(formData) {
+      console.log(formData);
+      try {
+        await prisma.post.create({
+          data: {
+            title: formData.title,
+            content: formData.content,
+            slug: formData.title.toLowerCase().split(" ").join("-"),
+          },
+        });
+      } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          if (error.code === "P2002") {
+            console.error("Post with this title already exists");
+          }
+        }
+      }
+      revalidatePath("/posts"); // Revalidate the cache for the /posts path
+      redirect("/posts");
+    }
+
+
+PRISMA Caching
+============================================================
+  -> You can see the caching documentation in the prisma documentation -> https://www.prisma.io/docs/accelerate/caching
+
+PRISMA MIGRATIONS to dev and prod
+============================================================
+
+  dev -> npx prisma migrate dev --name <migration_name>
+  prod -> npx prisma migrate deploy
+
+  -> Inside package.json file add the following line
+     "scripts": {
+        postinstall": "prisma generate && prisma migrate deploy"
+     }
+
+-> Also checkout PRISMA accelerate & PRISMA Pulse
+
+
+
+
