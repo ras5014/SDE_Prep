@@ -11,11 +11,46 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Link from "next/link"
+import { useForm } from "react-hook-form"
+import { useState } from "react"
+import axios from "axios"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm()
+
+  const router = useRouter();
+  const [disabled, setDisabled] = useState(false);
+
+  const onSubmit = async (formData) => {
+    setDisabled(true);
+    console.log(formData);
+    // API call to login user
+    try {
+      const response = await axios.post("/api/users/login", formData);
+      if (response.status === 200) {
+        toast.success("Login successful!");
+        console.log(response.data);
+        // Redirect to dashboard or home page
+        router.push("/profile");
+      }
+    } catch (error) {
+      toast.error("Incorrect email or password");
+      console.error(error);
+    }
+    setDisabled(false);
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -26,16 +61,16 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-6">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
-                  id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  {...register("email", { required: true })}
                 />
+                {errors.email && <span className="text-red-500">This field is required</span>}
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
@@ -47,7 +82,8 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input type="password" placeholder="Password" {...register("password", { required: true })} />
+                {errors.password && <span className="text-red-500">This field is required</span>}
               </div>
               <Button type="submit" className="w-full">
                 Login
@@ -58,9 +94,9 @@ export function LoginForm({
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <a href="#" className="underline underline-offset-4">
+              <Link href="/signup" className="underline underline-offset-4">
                 Sign up
-              </a>
+              </Link>
             </div>
           </form>
         </CardContent>
