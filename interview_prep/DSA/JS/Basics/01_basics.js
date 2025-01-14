@@ -14,7 +14,7 @@ console.log(a); // 5
 
 // Types in JS
 // Primitive - If we copy then only the value is copied not reference
-// Reference [], {}, () - If we copy then a reference is copied, not the actual value
+// Reference [], {}, () - If we copy then a reference is copied, not thel value
 // Brackets means reference, no brackets means primitive
 
 var arr = [12, 13];
@@ -39,3 +39,6 @@ console.log(a1, b1); // 5 7 // Both are different cause value is copied not refe
 if (-1) {
   console.log("I am true"); // This will print only 0 is false, -1 is truthy value
 }
+
+8870
+2320

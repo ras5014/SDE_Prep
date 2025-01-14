@@ -8,82 +8,143 @@
 	"buffers":
 	[
 		{
-			"contents": "// word (a, b) vs keyword (if, for)\n\n// var vs let vs const (Explained in next section)\n\n// hoisting (works with var, not with let)\n\na = 4;\nconsole.log(a); // 4\nvar a = 5; // At this step \"var a\" goes to the top of the code\nconsole.log(a); // 5\n\n// undefined -> the variable is there, but its value we don't know\n// not-defined -> the variable is not there, It's not defined\n\n// Types in JS\n// Primitive - If we copy then only the value is copied not reference\n// Reference [], {}, () - If we copy then a reference is copied, not thel value\n// Brackets means reference, no brackets means primitive\n\nvar arr = [12, 13];\nvar brr = arr;\n\nbrr.pop();\n//arr will also change here cause of pop of brr\nconsole.log(arr, brr); // [12] [12] // Both are same cause reference is copied\n// In case you don't want to copy reference then use spread operator\nvar arr1 = [12, 13];\nvar brr1 = [...arr1];\n// or use slice() method\nvar brr2 = arr1.slice();\n\n// Primitive\nvar a1 = 5;\nvar b1 = a1;\nb1 = 7;\n//a1 won't change here\nconsole.log(a1, b1); // 5 7 // Both are different cause value is copied not reference\n\nif (-1) {\n  console.log(\"I am true\"); // This will print only 0 is false, -1 is truthy value\n}\n\n8870\n2320\n",
-			"file": "01_basics.js",
-			"file_size": 1234,
-			"file_write_time": 133798894900564534,
+			"file": "/C/Users/raman/OneDrive/Desktop/MilfordMohr1993@outlook.txt",
 			"settings":
 			{
-				"buffer_size": 1198,
-				"line_ending": "Windows"
+				"buffer_size": 529,
+				"encoding": "UTF-8",
+				"line_ending": "Windows",
+				"name": "MilfordMohr1993@outlook.com"
 			},
 			"undo_stack":
 			[
 				[
 					3,
 					1,
-					"insert",
-					{
-						"characters": "\n\n88"
-					},
-					"BAAAAKgEAAAAAAAAqQQAAAAAAAAAAAAAqQQAAAAAAACqBAAAAAAAAAAAAACqBAAAAAAAAKsEAAAAAAAAAAAAAKsEAAAAAAAArAQAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAAqAQAAAAAAACoBAAAAAAAAAAAAAAAAPC/"
-				],
-				[
-					4,
-					1,
-					"insert",
-					{
-						"characters": "70"
-					},
-					"AgAAAKwEAAAAAAAArQQAAAAAAAAAAAAArQQAAAAAAACuBAAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAArAQAAAAAAACsBAAAAAAAAAAAAAAAAPC/"
-				],
-				[
-					5,
-					1,
-					"insert",
-					{
-						"characters": "\n2323"
-					},
-					"BQAAAK4EAAAAAAAArwQAAAAAAAAAAAAArwQAAAAAAACwBAAAAAAAAAAAAACwBAAAAAAAALEEAAAAAAAAAAAAALEEAAAAAAAAsgQAAAAAAAAAAAAAsgQAAAAAAACzBAAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAArgQAAAAAAACuBAAAAAAAAAAAAAAAAPC/"
+					"paste",
+					null,
+					"AQAAAAAAAAAAAAAADAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwvw"
 				],
 				[
 					6,
 					1,
 					"left_delete",
 					null,
-					"AQAAALIEAAAAAAAAsgQAAAAAAAABAAAAMw",
-					"AQAAAAAAAAABAAAAswQAAAAAAACzBAAAAAAAAAAAAAAAAPC/"
+					"AQAAAAcAAAAAAAAABwAAAAAAAAABAAAAIA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAgAAAAAAAAACAAAAAAAAAAAAAAAAADwvw"
 				],
 				[
-					7,
+					8,
 					1,
 					"insert",
 					{
-						"characters": "0"
+						"characters": "1993@"
 					},
-					"AQAAALIEAAAAAAAAswQAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAAsgQAAAAAAACyBAAAAAAAAAAAAAAAAPC/"
+					"BQAAAAsAAAAAAAAADAAAAAAAAAAAAAAADAAAAAAAAAANAAAAAAAAAAAAAAANAAAAAAAAAA4AAAAAAAAAAAAAAA4AAAAAAAAADwAAAAAAAAAAAAAADwAAAAAAAAAQAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAAsAAAAAAAAACwAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					9,
+					1,
+					"insert",
+					{
+						"characters": "outlook.com"
+					},
+					"CwAAABAAAAAAAAAAEQAAAAAAAAAAAAAAEQAAAAAAAAASAAAAAAAAAAAAAAASAAAAAAAAABMAAAAAAAAAAAAAABMAAAAAAAAAFAAAAAAAAAAAAAAAFAAAAAAAAAAVAAAAAAAAAAAAAAAVAAAAAAAAABYAAAAAAAAAAAAAABYAAAAAAAAAFwAAAAAAAAAAAAAAFwAAAAAAAAAYAAAAAAAAAAAAAAAYAAAAAAAAABkAAAAAAAAAAAAAABkAAAAAAAAAGgAAAAAAAAAAAAAAGgAAAAAAAAAbAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					10,
+					1,
+					"insert",
+					{
+						"characters": "\nV"
+					},
+					"AgAAABsAAAAAAAAAHAAAAAAAAAAAAAAAHAAAAAAAAAAdAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAABsAAAAAAAAAGwAAAAAAAAAAAAAAAADwvw"
 				],
 				[
 					11,
 					1,
 					"insert",
 					{
-						"characters": "       "
+						"characters": "armis5sas"
 					},
-					"CAAAABUCAAAAAAAAFgIAAAAAAAAAAAAAFgIAAAAAAAAWAgAAAAAAAAYAAAAgYWN0dWEWAgAAAAAAABcCAAAAAAAAAAAAABcCAAAAAAAAGAIAAAAAAAAAAAAAGAIAAAAAAAAZAgAAAAAAAAAAAAAZAgAAAAAAABoCAAAAAAAAAAAAABoCAAAAAAAAGwIAAAAAAAAAAAAAGwIAAAAAAAAcAgAAAAAAAAAAAAA",
-					"AQAAAAAAAAABAAAAFQIAAAAAAAAbAgAAAAAAAAAAAAAAAPC/"
+					"CQAAAB0AAAAAAAAAHgAAAAAAAAAAAAAAHgAAAAAAAAAfAAAAAAAAAAAAAAAfAAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAIQAAAAAAAAAAAAAAIQAAAAAAAAAiAAAAAAAAAAAAAAAiAAAAAAAAACMAAAAAAAAAAAAAACMAAAAAAAAAJAAAAAAAAAAAAAAAJAAAAAAAAAAlAAAAAAAAAAAAAAAlAAAAAAAAACYAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAAB0AAAAAAAAAHQAAAAAAAAAAAAAAAADwvw"
 				],
 				[
 					12,
+					1,
+					"insert",
+					{
+						"characters": "ke%"
+					},
+					"AwAAACYAAAAAAAAAJwAAAAAAAAAAAAAAJwAAAAAAAAAoAAAAAAAAAAAAAAAoAAAAAAAAACkAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAACYAAAAAAAAAJgAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					13,
+					1,
+					"insert",
+					{
+						"characters": "\n\n"
+					},
+					"AgAAACkAAAAAAAAAKgAAAAAAAAAAAAAAKgAAAAAAAAArAAAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAACkAAAAAAAAAKQAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					14,
+					1,
+					"paste",
+					null,
+					"AQAAACsAAAAAAAAA4QEAAAAAAAAAAAAA",
+					"AwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8AAAAAAQAAACsAAAAAAAAAKwAAAAAAAAAAAAAAAADwvw"
+				],
+				[
+					6,
+					1,
+					"insert",
+					{
+						"characters": "\n\n\n"
+					},
+					"AwAAAOEBAAAAAAAA4gEAAAAAAAAAAAAA4gEAAAAAAADjAQAAAAAAAAAAAADjAQAAAAAAAOQBAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAADhAQAAAAAAAOEBAAAAAAAAAAAAAAAA8L8"
+				],
+				[
 					7,
+					1,
+					"paste",
+					null,
+					"AQAAAOQBAAAAAAAAEQIAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAADkAQAAAAAAAOQBAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					30,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAABECAAAAAAAAEgIAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAARAgAAAAAAABECAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					31,
+					1,
+					"paste",
+					null,
+					"AQAAABICAAAAAAAAGwIAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAASAgAAAAAAABICAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					32,
+					10,
 					"left_delete",
 					null,
-					"BwAAABsCAAAAAAAAGwIAAAAAAAABAAAAIBoCAAAAAAAAGgIAAAAAAAABAAAAIBkCAAAAAAAAGQIAAAAAAAABAAAAIBgCAAAAAAAAGAIAAAAAAAABAAAAIBcCAAAAAAAAFwIAAAAAAAABAAAAIBYCAAAAAAAAFgIAAAAAAAABAAAAIBUCAAAAAAAAFQIAAAAAAAABAAAAIA",
-					"AQAAAAAAAAABAAAAHAIAAAAAAAAcAgAAAAAAAAAAAAAAAPC/"
+					"CgAAABoCAAAAAAAAGgIAAAAAAAABAAAAMxkCAAAAAAAAGQIAAAAAAAABAAAANBgCAAAAAAAAGAIAAAAAAAABAAAAMxcCAAAAAAAAFwIAAAAAAAABAAAANxYCAAAAAAAAFgIAAAAAAAABAAAALRUCAAAAAAAAFQIAAAAAAAABAAAAMRQCAAAAAAAAFAIAAAAAAAABAAAAMBMCAAAAAAAAEwIAAAAAAAABAAAANRICAAAAAAAAEgIAAAAAAAABAAAAMhECAAAAAAAAEQIAAAAAAAABAAAACg",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAbAgAAAAAAABsCAAAAAAAAAAAAAAAA8L8"
 				]
 			]
 		}
@@ -120,6 +181,7 @@
 	},
 	"file_history":
 	[
+		"/D/Learn/SDE_Prep/interview_prep/DSA/JS/Basics/01_basics.js",
 		"/D/Learn/SDE_Prep/MegaProjects/eCommerce_Udemy/readme.md",
 		"/D/LifeStyle Changes",
 		"/C/Users/raman/OneDrive/Desktop/PC",
@@ -164,30 +226,29 @@
 			[
 				{
 					"buffer": 0,
-					"file": "01_basics.js",
+					"file": "/C/Users/raman/OneDrive/Desktop/MilfordMohr1993@outlook.txt",
 					"selected": true,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1198,
+						"buffer_size": 529,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								533,
-								533
+								529,
+								529
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"auto_name": "MilfordMohr1993@outlook.com",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 320.0,
+						"translation.y": 120.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,

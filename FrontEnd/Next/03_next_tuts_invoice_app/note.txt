@@ -1,0 +1,3 @@
+-> Make notes about nextJS file structure with shadcn ui
+-> Make notes about different ways we can use CSS in nextJS, Write about "clsx" library
+-> Make notes about Next Image and how it does all optimizations under the hood for us
