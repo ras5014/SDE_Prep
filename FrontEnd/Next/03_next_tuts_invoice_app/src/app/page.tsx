@@ -3,8 +3,6 @@ import Link from "next/link";
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Image from "next/image";
 
-
-
 export default function Home() {
   return (
     <main className="flex flex-col min-h-screen p-6">
