@@ -13,3 +13,9 @@
             A common UI pattern is to show an active link to indicate to the user what page they are currently on. To do this, you need to get the user's current path from the URL. 
             Next.js provides a hook called usePathname() that you can use to check the path and implement this pattern.
             - Give example about clsx library here
+            
+-> Using Server Components to fetch data
+    - By default, Next.js applications use React Server Components. Fetching data with Server Components is a relatively new approach and there are a few benefits of using them:
+    - Server Components support JavaScript Promises, providing a solution for asynchronous tasks like data fetching natively. You can use async/await syntax without needing useEffect, useState or other data fetching libraries.
+    - Server Components run on the server, so you can keep expensive data fetches and logic on the server, only sending the result to the client.
+    - Since Server Components run on the server, you can query the database directly without an additional API layer. This saves you from writing and maintaining additional code.
