@@ -19,3 +19,35 @@
     - Server Components support JavaScript Promises, providing a solution for asynchronous tasks like data fetching natively. You can use async/await syntax without needing useEffect, useState or other data fetching libraries.
     - Server Components run on the server, so you can keep expensive data fetches and logic on the server, only sending the result to the client.
     - Since Server Components run on the server, you can query the database directly without an additional API layer. This saves you from writing and maintaining additional code.
+
+-> In JavaScript, you can use the Promise.all() or Promise.allSettled() functions to initiate all promises at the same time.
+   async/await runs promises sequentially, so you can't use it to run promises in parallel, But you can use Promise.all() or Promise.allSettled() to run promises in parallel.
+   what happens if one data request is slower than all the others?
+
+-> You can use server actions to communicate with the server from a client component.
+
+-> Static vs Dynamic rendering
+   - With dynamic rendering, your application is only as fast as your slowest data fetch.
+   - In dev mode, Next.js will render everything dynamically.
+   - By default, every component is statically rendered.
+   - Use noStore() to make a function dynamic, Any one who uses the function will also get dynamically rendered.
+
+-> NextJS Streaming. (Put the image in the notes)
+   - Make notes about how we made a (overview) Route group to only apply loading.tsk to dashboard page
+   - Route groups allow you to organize files into logical groups without affecting the URL path structure. When you create a new folder using parentheses (), the name won't be included in the URL path. So /dashboard/(overview)/page.tsx becomes /dashboard.
+   - Here, you're using a route group to ensure loading.tsx only applies to your dashboard overview page. However, you can also use route groups to separate your application into sections (e.g. (marketing) routes and (shop) routes) or by teams for larger applications.
+
+-> When ever we are using Suspense, we need to to make sure whatever component is inside Suspense, 
+   It should fetch it's own data. It shouldn't take props from parent component. Else the Suspense will not work.
+
+BEST PRACTICE: (While fetching multiple data in a component)
+   - Use Promise.all() or Promise.allSettled() to fetch multiple data in parallel.
+   - Keep all child components inside Suspense. (Fetch their data in their own component)
+
+-> Deciding where to place your Suspense boundaries
+   - You could stream the whole page like we did with loading.tsx... but that may lead to a longer loading time if one of the components has a slow data fetch.
+   - You could stream every component individually... but that may lead to UI popping into the screen as it becomes ready.
+   - You could also create a staggered effect by streaming page sections. But you'll need to create wrapper components.
+   - Where you place your suspense boundaries will vary depending on your application. In general, it's good practice to move your data fetches down to the components that need it, 
+     and then wrap those components in Suspense. But there is nothing wrong with streaming the sections or the whole page if that's what your application needs.
+

@@ -12,7 +12,7 @@ import { formatCurrency } from "./utils";
 
 export async function fetchRevenue() {
   try {
-    // await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const monthOrder = [
       "Jan",
@@ -43,6 +43,8 @@ export async function fetchRevenue() {
 
 export async function fetchLatestInvoices() {
   try {
+    // Adding a intentional delay to simulate a longer-running query
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const data = await prisma.invoice.findMany({
       take: 5,
       orderBy: {
@@ -87,12 +89,23 @@ export async function fetchCardData() {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+    const invoiceCountPromise = prisma.invoice.count();
+    const customerCountPromise = new Promise<number>((resolve) =>
+      setTimeout(() => resolve(prisma.customer.count()), 1000)
+    );
+    const invoiceStatusPromise = prisma.invoice.groupBy({
+      by: ["status"], // Groups results by the status field
+      _sum: {
+        amount: true, // Calculates sum of amounts for each group
+      },
+      where: {
+        OR: [
+          // Filters for either 'paid' or 'pending' status
+          { status: "paid" },
+          { status: "pending" },
+        ],
+      },
+    });
 
     const data = await Promise.all([
       invoiceCountPromise,
@@ -100,14 +113,14 @@ export async function fetchCardData() {
       invoiceStatusPromise,
     ]);
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? "0");
-    const numberOfCustomers = Number(data[1].rows[0].count ?? "0");
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? "0");
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? "0");
+    const numberOfInvoices = Number(data[0] ?? "0");
+    const numberOfCustomers = Number(data[1] ?? "0");
+    const totalPaidInvoices = formatCurrency(data[2][0]._sum.amount ?? 0);
+    const totalPendingInvoices = formatCurrency(data[2][1]._sum.amount ?? 0);
 
     return {
-      numberOfCustomers,
       numberOfInvoices,
+      numberOfCustomers,
       totalPaidInvoices,
       totalPendingInvoices,
     };
